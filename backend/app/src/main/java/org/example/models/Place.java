@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,4 +20,10 @@ public class Place {
     @GeneratedValue
     private UUID id;
 
+    @ManyToOne
+    @JoinColumn(name = "course")
+    private Course course;
+
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<Availability> availabilityList;
 }

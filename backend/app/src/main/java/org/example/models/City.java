@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,4 +20,9 @@ public class City {
     @GeneratedValue
     private UUID id;
 
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+    private List<Stop> stops;
 }

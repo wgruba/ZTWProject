@@ -19,4 +19,18 @@ public class Ticket {
     @GeneratedValue
     private UUID id;
 
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private User user;
+
+    @Column(name = "price")
+    private double price;
+
+    @ManyToOne
+    @JoinColumn(name = "course")
+    private Course course;
+
+    @ManyToOne
+    @JoinColumn(name = "distance")
+    private Distance distance;
 }

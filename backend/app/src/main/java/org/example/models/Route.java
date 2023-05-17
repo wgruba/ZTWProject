@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,4 +19,13 @@ public class Route {
     @Id
     @GeneratedValue
     private UUID id;
+
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Course> courses;
+
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    private List<Stop> stops;
 }

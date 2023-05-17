@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,4 +20,21 @@ public class Course {
     @Id
     @GeneratedValue
     private UUID id;
+
+    @Column(name = "courseDate")
+    private LocalDateTime courseDate;
+
+    @ManyToOne
+    @JoinColumn(name = "bus")
+    private Bus bus;
+
+    @ManyToOne
+    @JoinColumn(name = "route")
+    private Route route;
+
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Place> places;
+
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    private List<Ticket> tickets;
 }

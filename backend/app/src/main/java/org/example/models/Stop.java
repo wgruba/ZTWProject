@@ -18,4 +18,15 @@ public class Stop {
     @Id
     @GeneratedValue
     private UUID id;
+
+    @Column(name = "travellingTimeFromStart")
+    private int travellingTimeFromStart;
+
+    @ManyToOne
+    @JoinColumn(name = "route")
+    private Route route;
+
+    @ManyToOne
+    @JoinColumn(name = "city")
+    private City city;
 }
