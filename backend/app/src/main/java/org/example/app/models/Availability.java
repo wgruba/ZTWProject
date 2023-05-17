@@ -1,4 +1,4 @@
-package org.example.models;
+package org.example.app.models;
 
 
 import jakarta.persistence.*;
@@ -6,23 +6,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "City")
+@Table(name = "Availability")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class City {
+public class Availability {
     @Column(name = "id")
     @Id
     @GeneratedValue
     private UUID id;
 
-    @Column(name = "name")
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "distance")
+    private Distance distance;
 
-    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
-    private List<Stop> stops;
+    @ManyToOne
+    @JoinColumn(name = "place")
+    private Place place;
 }
