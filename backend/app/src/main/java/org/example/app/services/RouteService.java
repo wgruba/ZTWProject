@@ -1,9 +1,13 @@
 package org.example.app.services;
 
 import lombok.AllArgsConstructor;
+import org.example.app.exceptions.DomainViolation;
+import org.example.app.exceptions.Violations;
+import org.example.app.models.City;
 import org.example.app.models.Route;
 import org.example.app.models.Stop;
 import org.example.app.repositories.RouteRepository;
+import org.example.app.repositories.StopRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,17 +16,32 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class RouteService {
+    private final StopRepository stopRepository;
     private final RouteRepository routeRepository;
 
     public List<Route> getAllRoutes() {
         return routeRepository.findAll();
     }
 
-    public Optional<Route> getRouteBetweenStops(Stop starStop, Stop endStop) {
-        return getAllRoutes().stream().filter(route -> {
-            List<Stop> stops = route.orderedStops();
-            return (stops.indexOf(starStop) - stops.indexOf(endStop) <= 0) &&
-                    stops.contains(starStop) && stops.contains(endStop);
+    public Route getRouteBetweenCities(City startCity, City endCity) throws DomainViolation {
+        Optional<Route> maybeRoute = getAllRoutes().stream().filter(route -> {
+            List<City> cities = route.orderedStops().stream().map(Stop::getCity).toList();
+            return (cities.indexOf(startCity) - cities.indexOf(endCity) <= 0) &&
+                    cities.contains(startCity) && cities.contains(endCity);
         }).findFirst();
+        if (maybeRoute.isEmpty())
+            Violations.routeNotFound.throwEx(startCity.getName(), endCity.getName());
+        return maybeRoute.get();
     }
+
+//    public Route createRouteFromCities(String routeName, List<City> cities, List<Integer> travellingTimesFromStart) {
+//        if (cities.size() != travellingTimesFromStart.size())
+//            Violations.differentSizeOfCitiesAndTimes.throwEx(Integer.toString(cities.size()), Integer.toString(travellingTimesFromStart.size()));
+//        if (cities.size() < 2)
+//            Violations.notEnoughCities.throwEx(Integer.toString(cities.size()));
+//        Route newRoute = routeRepository.save(new Route(routeName));
+//
+//        cities.forEach(city -> stopRepository.save(new Stop(tra)));
+//        return newRoute;
+//    }
 }
