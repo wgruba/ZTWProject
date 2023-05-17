@@ -25,4 +25,9 @@ public class Bus {
 
     @OneToMany(mappedBy = "bus", fetch = FetchType.LAZY)
     private List<Course> courses;
+
+    public enum BusType {
+        Long,
+        Short,
+    }
 }
