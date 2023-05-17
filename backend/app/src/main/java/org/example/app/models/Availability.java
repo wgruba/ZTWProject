@@ -2,17 +2,17 @@ package org.example.app.models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "Availability")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
+@Setter
 public class Availability {
     @Column(name = "id")
     @Id
@@ -26,4 +26,9 @@ public class Availability {
     @ManyToOne
     @JoinColumn(name = "place")
     private Place place;
+
+    public Availability(Distance distance, Place place) {
+        this.distance = distance;
+        this.place = place;
+    }
 }

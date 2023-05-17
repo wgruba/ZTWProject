@@ -2,9 +2,9 @@ package org.example.app.models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "Course")
 @NoArgsConstructor
-@AllArgsConstructor
+@Setter
 @Getter
 public class Course {
     @Column(name = "id")
@@ -37,4 +37,10 @@ public class Course {
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     private List<Ticket> tickets;
+
+    public Course(LocalDateTime courseDate, Bus bus, Route route) {
+        this.courseDate = courseDate;
+        this.bus = bus;
+        this.route = route;
+    }
 }

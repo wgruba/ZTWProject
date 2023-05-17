@@ -2,16 +2,16 @@ package org.example.app.models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "Stop")
 @NoArgsConstructor
-@AllArgsConstructor
+@Setter
 @Getter
 public class Stop {
     @Column(name = "id")
@@ -29,4 +29,10 @@ public class Stop {
     @ManyToOne
     @JoinColumn(name = "city")
     private City city;
+
+    public Stop(int travellingTimeFromStart, Route route, City city) {
+        this.travellingTimeFromStart = travellingTimeFromStart;
+        this.route = route;
+        this.city = city;
+    }
 }

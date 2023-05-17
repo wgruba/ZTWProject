@@ -2,9 +2,9 @@ package org.example.app.models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "City")
 @NoArgsConstructor
-@AllArgsConstructor
+@Setter
 @Getter
 public class City {
     @Column(name = "id")
@@ -25,4 +25,8 @@ public class City {
 
     @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
     private List<Stop> stops;
+
+    public City(String name) {
+        this.name = name;
+    }
 }

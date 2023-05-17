@@ -2,17 +2,18 @@ package org.example.app.models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "Route")
 @NoArgsConstructor
-@AllArgsConstructor
+@Setter
 @Getter
 public class Route {
     @Column(name = "id")
@@ -28,4 +29,12 @@ public class Route {
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     private List<Stop> stops;
+
+    public Route(String name) {
+        this.name = name;
+    }
+
+    public List<Stop> orderedStops() {
+        return stops.stream().sorted(Comparator.comparingInt(Stop::getTravellingTimeFromStart)).toList();
+    }
 }
