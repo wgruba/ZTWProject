@@ -16,13 +16,14 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class RouteService {
-    private final StopRepository stopRepository;
-    private final RouteRepository routeRepository;
+    private final EntityService entityService;
 
     public List<Route> getAllRoutes() {
-        return routeRepository.findAll();
+        return entityService.routeRepository.findAll();
     }
 
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public Route getRouteBetweenCities(City startCity, City endCity) throws DomainViolation {
         Optional<Route> maybeRoute = getAllRoutes().stream().filter(route -> {
             List<City> cities = route.orderedStops().stream().map(Stop::getCity).toList();
@@ -33,6 +34,4 @@ public class RouteService {
             Violations.routeNotFound.throwEx(startCity.getName(), endCity.getName());
         return maybeRoute.get();
     }
-
-
 }
