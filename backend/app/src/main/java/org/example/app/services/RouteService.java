@@ -34,14 +34,5 @@ public class RouteService {
         return maybeRoute.get();
     }
 
-//    public Route createRouteFromCities(String routeName, List<City> cities, List<Integer> travellingTimesFromStart) {
-//        if (cities.size() != travellingTimesFromStart.size())
-//            Violations.differentSizeOfCitiesAndTimes.throwEx(Integer.toString(cities.size()), Integer.toString(travellingTimesFromStart.size()));
-//        if (cities.size() < 2)
-//            Violations.notEnoughCities.throwEx(Integer.toString(cities.size()));
-//        Route newRoute = routeRepository.save(new Route(routeName));
-//
-//        cities.forEach(city -> stopRepository.save(new Stop(tra)));
-//        return newRoute;
-//    }
+
 }
