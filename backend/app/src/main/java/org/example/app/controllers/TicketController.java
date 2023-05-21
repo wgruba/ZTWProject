@@ -10,9 +10,4 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class TicketController {
-
-    @PostMapping("ticket/create")
-    public ResponseEntity<Ticket> createTicket(@Validated @RequestBody CreateTicket createTicket) {
-
-    }
 }

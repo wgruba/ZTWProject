@@ -3,6 +3,7 @@ package org.example.app.services;
 import lombok.AllArgsConstructor;
 import org.example.app.exceptions.DomainViolation;
 import org.example.app.models.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class TicketService {
-    private final EntityService entityService;
+    @Autowired
+    private EntityService entityService;
 
     public Ticket createTicket(UUID userId, UUID courseId, List<UUID> places, UUID startStop, UUID endStop) throws DomainViolation {
         return createTicket(

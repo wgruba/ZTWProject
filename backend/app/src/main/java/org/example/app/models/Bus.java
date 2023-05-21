@@ -10,28 +10,39 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Bus")
+@Table(name = "Bus", schema = "ztw")
 @NoArgsConstructor
 @Setter
 @Getter
 public class Bus {
     @Column(name = "id")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "gene")
     private UUID id;
 
     @Column(name = "type")
-    private BusType type;
+    private String type;
 
     @OneToMany(mappedBy = "bus", fetch = FetchType.LAZY)
     private List<Course> courses;
 
     public enum BusType {
-        Long,
-        Short,
+        Long("Long"),
+        Short("Short");
+
+        private final String value;
+
+        private BusType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 
+
     public Bus(BusType type) {
-        this.type = type;
+        this.type = type.getValue();
     }
 }

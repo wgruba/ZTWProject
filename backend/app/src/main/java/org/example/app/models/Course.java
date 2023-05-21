@@ -1,6 +1,9 @@
 package org.example.app.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,9 +35,17 @@ public class Course {
     @JoinColumn(name = "route")
     private Route route;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Place> places;
 
+    @JsonProperty("places")
+    public List<UUID> getPlacesId() {
+        return places.stream().map(Place::getId).toList();
+    }
+
+
+    @JsonIgnore
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     private List<Ticket> tickets;
 
