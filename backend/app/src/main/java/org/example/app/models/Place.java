@@ -2,9 +2,9 @@ package org.example.app.models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "Place")
 @NoArgsConstructor
-@AllArgsConstructor
+@Setter
 @Getter
 public class Place {
     @Column(name = "id")
@@ -26,4 +26,8 @@ public class Place {
 
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
     private List<Availability> availabilityList;
+
+    public Place(Course course) {
+        this.course = course;
+    }
 }

@@ -1,9 +1,9 @@
 package org.example.app.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "User")
 @NoArgsConstructor
-@AllArgsConstructor
+@Setter
 @Getter
 public class User {
     @Column(name = "id")
@@ -27,4 +27,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Ticket> tickets;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

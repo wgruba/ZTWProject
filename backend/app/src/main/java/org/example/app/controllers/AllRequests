@@ -1,0 +1,3 @@
+Buying ticket:
+    get all cities -> find course between chosen cities after date -> choose places -> buy ticket
+    GET "/search/cities/" ->

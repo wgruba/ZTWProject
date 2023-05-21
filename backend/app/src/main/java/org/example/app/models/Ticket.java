@@ -2,16 +2,15 @@ package org.example.app.models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "Ticket")
 @NoArgsConstructor
-@AllArgsConstructor
+@Setter
 @Getter
 public class Ticket {
     @Column(name = "id")
@@ -33,4 +32,14 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "distance")
     private Distance distance;
+
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
+    private List<ReservedPlace> reservedPlaces;
+
+    public Ticket(User user, double price, Course course, Distance distance) {
+        this.user = user;
+        this.price = price;
+        this.course = course;
+        this.distance = distance;
+    }
 }
