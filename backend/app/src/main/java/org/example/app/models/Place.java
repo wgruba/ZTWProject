@@ -1,6 +1,7 @@
 package org.example.app.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Place {
     @JoinColumn(name = "course")
     private Course course;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
     private List<Availability> availabilityList;
 

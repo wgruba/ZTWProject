@@ -1,6 +1,7 @@
 package org.example.app.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,6 +34,7 @@ public class Ticket {
     @JoinColumn(name = "distance")
     private Distance distance;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
     private List<ReservedPlace> reservedPlaces;
 

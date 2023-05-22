@@ -1,6 +1,7 @@
 package org.example.app.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,11 @@ public class Distance {
     @JoinColumn(name = "endStop")
     private Stop endStop;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "distance", fetch = FetchType.LAZY)
     private List<Availability> availabilityList;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "distance", fetch = FetchType.LAZY)
     private List<Ticket> tickets;
 
