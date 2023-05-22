@@ -1,6 +1,7 @@
 package org.example.app.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +25,11 @@ public class Route {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "route", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Course> courses;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "route", fetch = FetchType.LAZY)
     private List<Stop> stops;
 

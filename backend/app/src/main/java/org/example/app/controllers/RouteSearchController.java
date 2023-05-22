@@ -14,12 +14,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:4200/")
 public class RouteSearchController {
     @Autowired
     private CityService cityService;
@@ -36,11 +39,11 @@ public class RouteSearchController {
                 .body(cityService.getAllCities());
     }
 
-    @GetMapping("/search/course")
+    @PostMapping("/search/course")
     public ResponseEntity<List<Course>> getConnections(@Validated @RequestBody SearchCourse searchCourse) {
         Route route = routeService.getRouteBetweenCities(searchCourse.getStartCity(), searchCourse.getEndCity());
         return ResponseEntity
-                .status(HttpStatus.FOUND)
+                .status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(courseService.getAllCoursesAtRouteAfterDate(route, searchCourse.getDepartureTime()));
     }
