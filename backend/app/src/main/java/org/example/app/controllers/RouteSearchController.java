@@ -1,6 +1,7 @@
 package org.example.app.controllers;
 
 import org.example.app.controllers.requests.search.SearchCourse;
+import org.example.app.controllers.responses.search.FoundCourse;
 import org.example.app.models.City;
 import org.example.app.models.Course;
 import org.example.app.models.Route;
@@ -40,12 +41,13 @@ public class RouteSearchController {
     }
 
     @PostMapping("/search/course")
-    public ResponseEntity<List<Course>> getConnections(@Validated @RequestBody SearchCourse searchCourse) {
+    public ResponseEntity<List<FoundCourse>> getConnections(@Validated @RequestBody SearchCourse searchCourse) {
         Route route = routeService.getRouteBetweenCities(searchCourse.getStartCity(), searchCourse.getEndCity());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body(courseService.getAllCoursesAtRouteAfterDate(route, searchCourse.getDepartureTime()));
+                .body(courseService.getAllCoursesAtRouteAfterDate(route, searchCourse.getDepartureTime())
+                        .stream().map(FoundCourse::new).toList());
     }
 
 }

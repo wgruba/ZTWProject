@@ -8,11 +8,15 @@ import { ConnectionLookupComponent } from './connection-lookup/connection-lookup
 import { HttpClientModule } from '@angular/common/http';
 
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { PageConnectionComponent } from './page-connection/page-connection.component';
+import { CourseSelectionComponent } from './course-selection/course-selection.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ConnectionLookupComponent
+    ConnectionLookupComponent,
+    PageConnectionComponent,
+    CourseSelectionComponent
   ],
   imports: [
     BrowserModule,

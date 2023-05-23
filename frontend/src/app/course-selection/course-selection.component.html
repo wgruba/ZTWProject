@@ -1,0 +1,12 @@
+<p>course-selection works!</p>
+
+<div *ngFor="let connection of connections.connections">
+    <div>
+      <div>
+        <h4>Course id: {{ connection.id }}</h4>
+        <p>Course date: {{ connection.departureDate }}</p>
+      </div>
+      <button (click)="checkAvailability(connection.id)">Check Availability</button>
+    </div>
+  </div>
+  

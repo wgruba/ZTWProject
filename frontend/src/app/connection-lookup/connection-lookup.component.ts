@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { City } from '../models/city';
 import { SearchCourse } from '../models/request-models/searchCourse';
+import { ConenctionWithCityId, Connection } from '../models/connection';
 
 @Component({
   selector: 'app-connection-lookup',
@@ -9,10 +10,11 @@ import { SearchCourse } from '../models/request-models/searchCourse';
   styleUrls: ['./connection-lookup.component.css']
 })
 export class ConnectionLookupComponent {
-  selectedCityFrom: City = new City("1", "name");
-  selectedCityTo: City = new City("2", "n");
+  selectedCityFrom: City = new City("", "");
+  selectedCityTo: City = new City("", "");
   selectedDepartureDate: Date = new Date;
   cities: City[] = [];
+  @Output() availableConnetions = new EventEmitter<ConenctionWithCityId>;
 
   constructor(private http: HttpClient) {
     this.retrieveCityList();
@@ -33,10 +35,11 @@ export class ConnectionLookupComponent {
       departureTime: this.selectedDepartureDate
     };
   
-    this.http.post('http://localhost:8080/search/course', searchCourse).subscribe(
+    this.http.post<Connection[]>('http://localhost:8080/search/course', searchCourse).subscribe(
       response => {
         // Handle the response from the backend if needed
         console.log('Request successful:', response);
+        this.availableConnetions.emit(new ConenctionWithCityId(response, this.selectedCityFrom.id, this.selectedCityTo.id));
       },
       error => {
         // Handle any errors that occurred during the request
@@ -44,20 +47,6 @@ export class ConnectionLookupComponent {
       }
     );
   }
-  
-  // private formatDateWithTime(date: Date): string {
-  //   const year = date.getFullYear();
-  //   const month = this.padNumber(date.getMonth() + 1);
-  //   const day = this.padNumber(date.getDate());
-  //   const hours = this.padNumber(date.getHours());
-  //   const minutes = this.padNumber(date.getMinutes());
-  
-  //   return `${year}-${month}-${day} ${hours}:${minutes}`;
-  // }
-  
-  // private padNumber(num: number): string {
-  //   return num.toString().padStart(2, '0');
-  // }
   
   
   compareFn(city1: City, city2: City): boolean {
