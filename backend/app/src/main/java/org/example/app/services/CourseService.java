@@ -2,6 +2,7 @@ package org.example.app.services;
 
 import lombok.AllArgsConstructor;
 import org.example.app.models.Course;
+import org.example.app.models.Place;
 import org.example.app.models.Route;
 import org.example.app.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;

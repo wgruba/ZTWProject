@@ -46,4 +46,11 @@ public class Distance {
         return endStop.getTravellingTimeFromStart() - startStop.getTravellingTimeFromStart();
     }
 
+    public boolean checkIfIntersect(Distance other) {
+        if (!startStop.getRoute().equals(other.startStop.getRoute()))
+            return false;
+
+        return endStop.isStopBefore(other.startStop) || other.endStop.isStopBefore(startStop);
+    }
+
 }

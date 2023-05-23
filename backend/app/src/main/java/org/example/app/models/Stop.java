@@ -35,4 +35,8 @@ public class Stop {
         this.route = route;
         this.city = city;
     }
+
+    public boolean isStopBefore(Stop other) {
+        return travellingTimeFromStart <= other.travellingTimeFromStart;
+    }
 }

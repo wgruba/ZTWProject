@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -31,5 +32,12 @@ public class City {
 
     public City(String name) {
         this.name = name;
+    }
+
+    public boolean idEqualsAnyOf(UUID...ids) {
+        for(UUID tmpId: ids)
+            if (tmpId.equals(this.id))
+                return true;
+        return false;
     }
 }
