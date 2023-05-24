@@ -1,21 +1,24 @@
 package org.example.app.controllers.requests.ticket;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
 @Getter
-@Setter
+@NoArgsConstructor
+@SuppressWarnings("unused")
 public class CreateTicket {
+    @NotNull
     private UUID userId;
+    @NotNull
     private UUID courseId;
+    @NotNull
     private List<UUID> placesIds;
+    @NotNull
     private UUID startStopId;
+    @NotNull
     private UUID endStopId;
 }

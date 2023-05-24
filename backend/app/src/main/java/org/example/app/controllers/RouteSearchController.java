@@ -1,5 +1,6 @@
 package org.example.app.controllers;
 
+import jakarta.validation.Valid;
 import org.example.app.controllers.requests.search.CheckAvailability;
 import org.example.app.controllers.requests.search.SearchCourse;
 import org.example.app.controllers.responses.search.FoundCourse;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:4200/")
+@SuppressWarnings("unused")
 public class RouteSearchController {
     @Autowired
     private CityService cityService;
@@ -42,7 +44,7 @@ public class RouteSearchController {
     }
 
     @PostMapping("/search/course")
-    public ResponseEntity<List<FoundCourse>> getConnections(@RequestBody SearchCourse searchCourse) {
+    public ResponseEntity<List<FoundCourse>> getConnections(@Valid @RequestBody SearchCourse searchCourse) {
         Route route = routeService.getRouteBetweenCities(searchCourse.getStartCity(), searchCourse.getEndCity());
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -52,7 +54,7 @@ public class RouteSearchController {
     }
 
     @PostMapping("/search/availability")
-    public ResponseEntity<List<PlaceInfo>> getPlaces(@RequestBody CheckAvailability checkAvailability) {
+    public ResponseEntity<List<PlaceInfo>> getPlaces(@Valid @RequestBody CheckAvailability checkAvailability) {
         Distance dummyDistance = distanceService.getDummyDistance(
                 checkAvailability.getCityFromId(),
                 checkAvailability.getCityToId(),
