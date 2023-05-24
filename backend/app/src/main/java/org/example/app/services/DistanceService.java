@@ -1,5 +1,6 @@
 package org.example.app.services;
 
+import org.example.app.exceptions.DomainViolation;
 import org.example.app.models.Course;
 import org.example.app.models.Distance;
 import org.example.app.models.Stop;
@@ -16,7 +17,7 @@ public class DistanceService {
     @Autowired
     private EntityService entityService;
 
-    public Distance getDummyDistance(UUID cityFromId, UUID cityToId, UUID courseId) {
+    public Distance getDummyDistance(UUID cityFromId, UUID cityToId, UUID courseId) throws DomainViolation {
         Course course = entityService.getEntityById(courseId, Course.class);
         List<Stop> stops = course.getRoute().orderedStops().stream().filter(stop ->
                 stop.getCity().idEqualsAnyOf(cityFromId, cityToId)).toList();
