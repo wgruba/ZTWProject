@@ -10,13 +10,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { PageConnectionComponent } from './page-connection/page-connection.component';
 import { CourseSelectionComponent } from './course-selection/course-selection.component';
+import { SeatSelectionComponent } from './seat-selection/seat-selection.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConnectionLookupComponent,
     PageConnectionComponent,
-    CourseSelectionComponent
+    CourseSelectionComponent,
+    SeatSelectionComponent
   ],
   imports: [
     BrowserModule,

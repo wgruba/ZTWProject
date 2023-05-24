@@ -1,0 +1,6 @@
+<p>seat-selection works!</p>
+
+<div class="bus-seat" *ngFor="let seat of seats" (click)="selectSeat(seat.placeId)" [ngClass]="{ 'selected': seat.isSelected, 'occupied': !seat.available }">
+    M
+  </div>
+  

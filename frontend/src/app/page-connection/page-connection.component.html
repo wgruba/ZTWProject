@@ -1,4 +1,5 @@
 <p>page-connection works!</p>
 
 <app-connection-lookup (availableConnetions)="showResult($event)"></app-connection-lookup>
-<app-course-selection *ngIf="showCourseSelection" [connections]="connections"></app-course-selection>
+<app-course-selection *ngIf="showCourseSelection" [connections]="connections" (seats)="showSeat($event)"></app-course-selection>
+<app-seat-selection *ngIf="showSeatSelection" [seats]="seats"></app-seat-selection>
