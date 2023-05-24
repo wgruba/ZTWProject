@@ -10,14 +10,22 @@ import { CheckAvailability } from '../models/request-models/checkAvailability';
 export class SeatSelectionComponent {
   @Input() seats: PlaceInfo[] = [];
 
+
   selectSeat(seatId: string): void {
-    console.log(seatId);
     const seat = this.seats.find(s => s.placeId === seatId);
-    console.log(seat?.available)
     if (seat != null && seat.available) {
       seat.isSelected = !seat.isSelected;
       console.log('Selected seat:', seat.placeId);
     }
   }
   
+  buyTicket() {
+    const selectedSeats = this.getSelectedSeats();
+    console.log("Request will be sent. N. selected: " + selectedSeats.length);
+  }
+
+  getSelectedSeats(): string[] {
+    return this.seats.filter(place => place.isSelected).map(place => place.placeId);
+  }
+
 }

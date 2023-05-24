@@ -1,6 +1,21 @@
 <p>seat-selection works!</p>
-
+<!-- 
 <div class="bus-seat" *ngFor="let seat of seats" (click)="selectSeat(seat.placeId)" [ngClass]="{ 'selected': seat.isSelected, 'occupied': !seat.available }">
     M
-  </div>
+  </div> -->
+
+  <tbody>
+    <ng-container *ngFor="let rowIndex of [0, 1, 2, 3]">
+      <tr>
+        <td *ngFor="let seatIndex of [0, 1, 2, 3, 4]">
+          <div class="bus-seat" (click)="selectSeat(seats[rowIndex * 5 + seatIndex].placeId)"
+            [ngClass]="{ 'selected': seats[rowIndex * 5 + seatIndex].isSelected, 'occupied': !seats[rowIndex * 5 + seatIndex].available }">
+            M
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+  <button (click)="buyTicket()">Buy Selected</button>
+  
   
