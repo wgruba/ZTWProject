@@ -8,8 +8,8 @@
     <ng-container *ngFor="let rowIndex of [0, 1, 2, 3]">
       <tr>
         <td *ngFor="let seatIndex of [0, 1, 2, 3, 4]">
-          <div class="bus-seat" (click)="selectSeat(seats[rowIndex * 5 + seatIndex].placeId)"
-            [ngClass]="{ 'selected': seats[rowIndex * 5 + seatIndex].isSelected, 'occupied': !seats[rowIndex * 5 + seatIndex].available }">
+          <div class="bus-seat" (click)="selectSeat(seats.places[rowIndex * 5 + seatIndex].placeId)"
+            [ngClass]="{ 'selected': seats.places[rowIndex * 5 + seatIndex].isSelected, 'occupied': !seats.places[rowIndex * 5 + seatIndex].available }">
             M
           </div>
         </td>

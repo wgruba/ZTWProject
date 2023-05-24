@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ConnectionLookupComponent } from '../connection-lookup/connection-lookup.component';
 import { ConenctionWithCityId, Connection} from '../models/connection';
-import { PlaceInfo } from '../models/placeInfo';
+import { PlaceInfo, PlaceInfoWithCourseStops } from '../models/placeInfo';
 import { SeatSelectionComponent } from '../seat-selection/seat-selection.component';
 
 @Component({
@@ -13,7 +13,7 @@ export class PageConnectionComponent {
   connections: ConenctionWithCityId = new ConenctionWithCityId([], "", "");
   showCourseSelection = false;
   showSeatSelection = false;
-  seats: PlaceInfo[] = [];
+  seats: PlaceInfoWithCourseStops = new PlaceInfoWithCourseStops([], "", "", "");
 
   showResult(connections: any) {
     this.connections = connections;

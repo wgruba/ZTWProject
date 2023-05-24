@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { PlaceInfo } from '../models/placeInfo';
+import { PlaceInfo, PlaceInfoWithCourseStops } from '../models/placeInfo';
 import { CheckAvailability } from '../models/request-models/checkAvailability';
 
 @Component({
@@ -8,11 +8,11 @@ import { CheckAvailability } from '../models/request-models/checkAvailability';
   styleUrls: ['./seat-selection.component.css']
 })
 export class SeatSelectionComponent {
-  @Input() seats: PlaceInfo[] = [];
+  @Input() seats: PlaceInfoWithCourseStops = new PlaceInfoWithCourseStops([], "", "", "");
 
 
   selectSeat(seatId: string): void {
-    const seat = this.seats.find(s => s.placeId === seatId);
+    const seat = this.seats.places.find(s => s.placeId === seatId);
     if (seat != null && seat.available) {
       seat.isSelected = !seat.isSelected;
       console.log('Selected seat:', seat.placeId);
@@ -25,7 +25,7 @@ export class SeatSelectionComponent {
   }
 
   getSelectedSeats(): string[] {
-    return this.seats.filter(place => place.isSelected).map(place => place.placeId);
+    return this.seats.places.filter(place => place.isSelected).map(place => place.placeId);
   }
 
 }

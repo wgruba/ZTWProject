@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ConenctionWithCityId, Connection } from '../models/connection';
 import { HttpClient } from '@angular/common/http';
 import { CheckAvailability } from '../models/request-models/checkAvailability';
-import { PlaceInfo } from '../models/placeInfo';
+import { PlaceInfo, PlaceInfoWithCourseStops } from '../models/placeInfo';
 
 @Component({
   selector: 'app-course-selection',
@@ -11,7 +11,7 @@ import { PlaceInfo } from '../models/placeInfo';
 })
 export class CourseSelectionComponent {
   @Input() connections: ConenctionWithCityId = new ConenctionWithCityId([], "", "");
-  @Output() seats = new EventEmitter<PlaceInfo[]>
+  @Output() seats = new EventEmitter<PlaceInfoWithCourseStops>
 
   constructor(private http: HttpClient) {
 
@@ -22,7 +22,7 @@ export class CourseSelectionComponent {
       new CheckAvailability(connectionId, this.connections.cityFrom, this.connections.cityTo)).subscribe(
       response => {
         console.log('Request successful:', response);
-        this.seats.emit(response);
+        this.seats.emit(new PlaceInfoWithCourseStops(response, connectionId, this.connections.cityFrom, this.connections.cityTo));
       },
       error => {
         // Handle any errors that occurred during the request
