@@ -1,11 +1,20 @@
 <div class="main">
     <div class="search-container">
         <p>Where are you going? </p>
-        <form class="search-form">
-            <input type="text" placeholder="From Station" />
-            <input type="text" placeholder="To Station" />
-            <input type="date" />
+        <form  (ngSubmit)="submitForm()" class="search-form">
+            <label for="startCity">From</label>
+            <select class="form-control" id="startCity" required [(ngModel)]="selectedCityFrom" name="startCity" [compareWith]="compareFn">
+                <option *ngFor="let city of cities" [ngValue]="city">{{ city.name }}</option>
+              </select>
+            <label for="endCity">To</label>
+            <select class="form-control" id="endCity" required [(ngModel)]="selectedCityTo" name="endCity" [compareWith]="compareFn">
+                <option *ngFor="let city of cities" [ngValue]="city">{{ city.name }}</option>
+              </select>
+            <label for="departureDate">Departure Date</label>
+            <input type="datetime-local" class="form-control" id="departureDate" required [(ngModel)]="selectedDepartureDate" name="departureDate">            
+            
             <button class="main__cta" type="submit"> Search </button>
+       
         </form>
     </div>
     <div class="main_text-container">

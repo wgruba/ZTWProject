@@ -1,0 +1,13 @@
+
+<div class="content">
+  <div *ngFor="let connection of connections.connections" class="card">
+    <div>
+      <i class="fas fa-bus"></i>
+      <div>
+        <h4>Course id: {{ connection.id }}</h4>
+        <p>Course date: {{ connection.departureDate }}</p>
+      </div>
+      <button (click)="checkAvailability(connection.id)">Check Availability</button>
+    </div>
+  </div>
+</div>

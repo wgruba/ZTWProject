@@ -15,6 +15,12 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { MainComponent } from './main/main.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { HomeSiteComponent } from './home-site/home-site.component';
+import { SearchedSiteComponent } from './searched-site/searched-site.component';
+import { RouterModule } from '@angular/router';
+import { SearchedContentComponent } from './searched-content/searched-content.component';
 
 @NgModule({
   declarations: [
@@ -27,14 +33,23 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     NavbarComponent,
     FooterComponent,
     MainComponent,
-    SidebarComponent
+    SidebarComponent,
+    HomeSiteComponent,
+    SearchedSiteComponent,
+    SearchedContentComponent,
   ],
   imports: [
+    MatSnackBarModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    
+    BrowserAnimationsModule,
+    RouterModule.forRoot([
+      {path: '', component: HomeSiteComponent},
+      {path: 'searched', component: SearchedSiteComponent},
+      {path: '', redirectTo: '/searched', pathMatch: 'full'},
+    ]),
   ],
   providers: [],
   bootstrap: [AppComponent]
