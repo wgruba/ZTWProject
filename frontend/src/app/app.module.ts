@@ -7,10 +7,14 @@ import { AppComponent } from './app.component';
 import { ConnectionLookupComponent } from './connection-lookup/connection-lookup.component';
 import { HttpClientModule } from '@angular/common/http';
 
-import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { PageConnectionComponent } from './page-connection/page-connection.component';
 import { CourseSelectionComponent } from './course-selection/course-selection.component';
 import { SeatSelectionComponent } from './seat-selection/seat-selection.component';
+import { HeaderComponent } from './header/header.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
+import { MainComponent } from './main/main.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -18,14 +22,19 @@ import { SeatSelectionComponent } from './seat-selection/seat-selection.componen
     ConnectionLookupComponent,
     PageConnectionComponent,
     CourseSelectionComponent,
-    SeatSelectionComponent
+    SeatSelectionComponent,
+    HeaderComponent,
+    NavbarComponent,
+    FooterComponent,
+    MainComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    TimepickerModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
