@@ -19,6 +19,7 @@ interface Seat {
   height: number;
   isReserved: boolean;
   seatNumber: number;
+  onceSelected: boolean;
 }
 
 @Component({
@@ -44,7 +45,8 @@ export class SelectionContentComponent implements OnInit{
   private readonly aisleWidth = 20;
   selectedConnectionId: string;
   selectedDate: string;
-  selectedBus: Bus = { type: 'large', numRows: 8, numCols: 5};
+  selectedBus: Bus = { type: 'none', numRows: 0, numCols: 0};
+  seatsInfo: PlaceInfoWithCourseStops;
 
 
   canvasHeight = 100;
@@ -73,6 +75,16 @@ export class SelectionContentComponent implements OnInit{
     this.dataService.selectedDate.subscribe(date => {
       this.selectedDate = date; 
     });
+    this.dataService.placeInfo.subscribe(placeInfo => {
+      this.seatsInfo = placeInfo; 
+    });
+
+    if(this.seatsInfo.places.length > 20){
+      this.selectedBus = { type: 'large', numRows: 8, numCols: 5};
+    }
+    else{
+      this.selectedBus = { type: 'small', numRows: 5, numCols: 5};
+    }
     
     const backgroundImage = new Image();
     backgroundImage.src = 'assets/bus-backgroung.png';
@@ -96,7 +108,8 @@ export class SelectionContentComponent implements OnInit{
           width: this.seatWidth,
           height: this.seatHeight,
           isReserved: false,
-          seatNumber: seatNumber++
+          seatNumber: seatNumber++,
+          onceSelected :false
         });
 
         this.seats.push({
@@ -105,7 +118,8 @@ export class SelectionContentComponent implements OnInit{
           width: this.seatWidth,
           height: this.seatHeight,
           isReserved: false,
-          seatNumber: seatNumber++
+          seatNumber: seatNumber++,
+          onceSelected: false,
         });
       }
     }
@@ -118,7 +132,8 @@ export class SelectionContentComponent implements OnInit{
         width: this.seatWidth,
         height: this.seatHeight,
         isReserved: false,
-        seatNumber: seatNumber++
+        seatNumber: seatNumber++,
+        onceSelected: false,
       });
     }
   }
@@ -143,21 +158,38 @@ export class SelectionContentComponent implements OnInit{
     const rect = this.canvas.nativeElement.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-
+  
     const clickedSeat = this.seats.find(seat => 
       x >= seat.x && x <= seat.x + seat.width && 
       y >= seat.y && y <= seat.y + seat.height);
+  
+    if (clickedSeat) {
+      if (clickedSeat.isReserved) {
+        const index = this.selectedSeats.indexOf(clickedSeat);
+        if (index > -1) {
+          this.selectedSeats.splice(index, 1);
+        }
+        this.totalPrice -= this.pricePerSeat;
+      } else {
 
-    if (clickedSeat && !clickedSeat.isReserved) {
-      clickedSeat.isReserved = true;
-      this.selectedSeats.push(clickedSeat);
-      this.totalPrice += this.pricePerSeat;
+        this.selectedSeats.push(clickedSeat);
+        this.totalPrice += this.pricePerSeat;
+      }
+      
+      clickedSeat.isReserved = !clickedSeat.isReserved;
       this.drawSeats();
     }
   }
 
-  buyTickets(): void {
-    // Implement your logic to finalize the purchase
-    console.log(this.selectedSeats);
+  getSelectedSeats(): string[] {
+    return this.seatsInfo.places.filter(place => place.isSelected).map(place => place.placeId);
   }
+
+  buyTickets(): void {
+    for (let place = 0; place < this.seatsInfo.places.length; place++) {
+    this.seatsInfo.places[this.selectedSeats[place].seatNumber - 1].isSelected = true;
+    console.log(this.getSelectedSeats());
+    this.router.navigate(['/cart']);
+  }
+}
 }

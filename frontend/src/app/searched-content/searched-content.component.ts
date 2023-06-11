@@ -27,6 +27,7 @@ export class SearchedContentComponent {
         console.log('Request successful:', response);
         this.dataService.changeSelectedConnectionId(connectionId);
         this.dataService.changeSelectedDate(departureTime);
+        this.dataService.changePlaceInfoDate(new PlaceInfoWithCourseStops(response,connectionId,this.connections.cityFrom,this.connections.cityTo));
         this.router.navigate(['/select']);
       },
       error => {
