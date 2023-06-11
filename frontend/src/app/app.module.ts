@@ -21,6 +21,8 @@ import { HomeSiteComponent } from './home-site/home-site.component';
 import { SearchedSiteComponent } from './searched-site/searched-site.component';
 import { RouterModule } from '@angular/router';
 import { SearchedContentComponent } from './searched-content/searched-content.component';
+import { SelectionSiteComponent } from './selection-site/selection-site.component';
+import { SelectionContentComponent } from './selection-content/selection-content.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { SearchedContentComponent } from './searched-content/searched-content.co
     HomeSiteComponent,
     SearchedSiteComponent,
     SearchedContentComponent,
+    SelectionSiteComponent,
+    SelectionContentComponent,
   ],
   imports: [
     MatSnackBarModule,
@@ -48,7 +52,9 @@ import { SearchedContentComponent } from './searched-content/searched-content.co
     RouterModule.forRoot([
       {path: '', component: HomeSiteComponent},
       {path: 'searched', component: SearchedSiteComponent},
+      {path: 'select', component: SelectionSiteComponent},
       {path: '', redirectTo: '/searched', pathMatch: 'full'},
+      {path: '', redirectTo: '/select', pathMatch: 'full'},
     ]),
   ],
   providers: [],

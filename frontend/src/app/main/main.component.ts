@@ -59,8 +59,6 @@ export class MainComponent {
                 { 
                   duration: 3000,
                   panelClass: ['red-snackbar'] });
-                  this.router.navigate(['/searched']);
-
             }
       }
     );

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { ConenctionWithCityId, Connection } from '../models/connection';
 import { HttpClient } from '@angular/common/http';
 import { CheckAvailability } from '../models/request-models/checkAvailability';
@@ -15,16 +16,18 @@ export class SearchedContentComponent {
   @Input() connections: ConenctionWithCityId = new ConenctionWithCityId([], "", "");
   @Output() seats = new EventEmitter<PlaceInfoWithCourseStops>
 
-  constructor(private http: HttpClient, private dataService: DataService) {
+  constructor(private http: HttpClient, private dataService: DataService, private router: Router) {
     this.dataService.currentConnection.subscribe(connection => this.connections = connection);
   }
 
-  checkAvailability(connectionId: string) {
+  checkAvailability(connectionId: string, departureTime: string) {
     this.http.post<PlaceInfo[]>('http://localhost:8080/search/availability', 
       new CheckAvailability(connectionId, this.connections.cityFrom, this.connections.cityTo)).subscribe(
       response => {
         console.log('Request successful:', response);
-        this.seats.emit(new PlaceInfoWithCourseStops(response, connectionId, this.connections.cityFrom, this.connections.cityTo));
+        this.dataService.changeSelectedConnectionId(connectionId);
+        this.dataService.changeSelectedDate(departureTime);
+        this.router.navigate(['/select']);
       },
       error => {
         // Handle any errors that occurred during the request
