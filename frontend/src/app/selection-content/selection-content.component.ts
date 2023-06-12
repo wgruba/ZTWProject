@@ -1,9 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PlaceInfo, PlaceInfoWithCourseStops } from '../models/placeInfo';
-import { CheckAvailability } from '../models/request-models/checkAvailability';
 import { DataService } from '../data.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ConenctionWithCityId, Connection } from '../models/connection';
+import { BuyTickets } from '../models/request-models/buyTicket';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 
 interface Bus {
@@ -47,12 +50,13 @@ export class SelectionContentComponent implements OnInit{
   selectedDate: string;
   selectedBus: Bus = { type: 'none', numRows: 0, numCols: 0};
   seatsInfo: PlaceInfoWithCourseStops;
+  connection: ConenctionWithCityId ;
 
 
   canvasHeight = 100;
   canvasWidth = 100;
 
-  constructor(private http: HttpClient, private dataService: DataService, private router: Router) {
+  constructor(private http: HttpClient,private snackBar: MatSnackBar ,private dataService: DataService, private router: Router) {
   
   }
 
@@ -78,7 +82,9 @@ export class SelectionContentComponent implements OnInit{
     this.dataService.placeInfo.subscribe(placeInfo => {
       this.seatsInfo = placeInfo; 
     });
-
+    this.dataService.currentConnection.subscribe(currentConnection => {
+      this.connection = currentConnection; 
+    });
     if(this.seatsInfo.places.length > 25){
       this.selectedBus = { type: 'large', numRows: 8, numCols: 5};
     }
@@ -195,9 +201,25 @@ export class SelectionContentComponent implements OnInit{
 
   buyTickets(): void {
     for (let place = 0; place < this.seatsInfo.places.length; place++) {
-    this.seatsInfo.places[this.selectedSeats[place].seatNumber - 1].isSelected = true;
-    console.log(this.getSelectedSeats());
-    this.router.navigate(['/cart']);
+      this.seatsInfo.places[this.selectedSeats[place].seatNumber - 1].isSelected = true;
+    }
+    this.http.post<string>('http://localhost:8080/buy/ticket', new BuyTickets(" ", this.selectedConnectionId, this.getSelectedSeats(), this.connection.cityFrom, this.connection.cityTo, this.totalPrice)).subscribe(
+      response => {
+        console.log('Request successful:', response);
+        this.router.navigate(['/cart']);
+      },
+      error => {
+        console.error('An error occurred:', error);
+        if (error.error instanceof ErrorEvent) {
+          // A network error occurred
+          console.error('Network error:', error.error.message);
+          this.snackBar.open('A network error occurred. Please check your internet connection.', undefined, { panelClass: ['red-snackbar'] });
+        } else {
+          // The backend returned an unsuccessful response code
+          console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+          this.snackBar.open(`An error occurred while processing your request. Please try again later.`, undefined, { duration: 3000, panelClass: ['red-snackbar'] });
+        }
+      }
+    );
   }
-}
 }

@@ -12,12 +12,16 @@ export class DataService {
   private selectedConnectionIdSource = new BehaviorSubject<string>("");
   private selectedDateSource = new BehaviorSubject<string>("");
   private placeInfoSource = new BehaviorSubject(new PlaceInfoWithCourseStops([],'','',''));
+  private routeNameSource = new BehaviorSubject<string>("");
+  private userIdSource = new BehaviorSubject<string>("");
 
 
   currentConnection = this.connectionSource.asObservable();
   selectedConnectionId = this.selectedConnectionIdSource.asObservable();
   selectedDate = this.selectedDateSource.asObservable();
   placeInfo = this.placeInfoSource.asObservable();
+  routeName = this.routeNameSource.asObservable();
+  userId  = this.userIdSource.asObservable();
 
 
   constructor() { }
@@ -34,5 +38,11 @@ export class DataService {
   }
   changePlaceInfoDate(paceInfoWithCourseStops: PlaceInfoWithCourseStops) {
     this.placeInfoSource.next(paceInfoWithCourseStops);
+  }
+  changeRouteName(routeName: string) {
+    this.routeNameSource.next(routeName);
+  }
+  changeUserId(userId: string) {
+    this.userIdSource.next(userId);
   }
 }

@@ -4,7 +4,7 @@
     <div>
       <i class="fas fa-bus"></i>
       <div>
-        <h4>Course id: {{ connection.id }}</h4>
+        <h4>Course name: {{ connection.routeName }}</h4>
         <p>Course date: {{ connection.departureDate }}</p>
       </div>
       <button (click)="checkAvailability(connection.id, connection.departureDate.toString())">Check Availability</button>

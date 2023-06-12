@@ -2,8 +2,15 @@
 <div class = content>
     <div class="content__left">
         <i class="fas fa-bus"></i>
-        <h2>Selected Route: <br> {{selectedConnectionId}}</h2>
-        <h3>Departure Date: {{selectedDate}}</h3>
+        <div *ngFor="let connection of connection.connections">
+            <div *ngIf="connection.id === selectedConnectionId">
+                <h2>Selected Route: <br> {{connection.routeName}}</h2>
+                <h3>Departure Date: {{selectedDate}}</h3>
+                <div *ngFor="let stop of connection.stops">
+                    <h3>Stops: {{stop.cityName}}</h3>
+                </div>
+            </div>
+    </div>
     </div>
     <div class="content__right">
         <canvas #canvas (click)="handleClick($event)"></canvas>

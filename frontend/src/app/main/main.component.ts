@@ -41,7 +41,7 @@ export class MainComponent {
     this.http.post<Connection[]>('http://localhost:8080/search/course', searchCourse).subscribe(
       response => {
         // Handle the response from the backend if needed
-        console.log('Request successful:', response);
+        console.log('Request successful:',);
         this.dataService.changeConnection(new ConenctionWithCityId(response, this.selectedCityFrom.id, this.selectedCityTo.id));
         this.router.navigate(['/searched']);
       },

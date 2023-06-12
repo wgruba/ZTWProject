@@ -2,11 +2,13 @@ export class Connection {
     id: string;
     departureDate: Date;
     stops: StopInConnection[];
+    routeName: string;
 
-    constructor(id: string, departureDate: Date, stops: StopInConnection[]) {
+    constructor(id: string, departureDate: Date, stops: StopInConnection[], routeName: string) {
         this.id = id;
         this.departureDate = departureDate;
         this.stops = stops;
+        this.routeName = routeName;
     }
 }
 
