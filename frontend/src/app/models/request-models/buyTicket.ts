@@ -12,6 +12,6 @@ export class BuyTickets {
         this.placesIds = placesIds;
         this.startStopId = startStopId;
         this.endStopId = endStopId;
-        this.price = price;
+        this.price = price
     }
 }

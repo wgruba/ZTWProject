@@ -199,11 +199,31 @@ export class SelectionContentComponent implements OnInit{
     return this.seatsInfo.places.filter(place => place.isSelected).map(place => place.placeId);
   }
 
+  getStartStop(): string {
+    for (let connection of this.connection.connections) {
+      if (connection.id === this.selectedConnectionId) {
+          return connection.stops[0].id
+      }
+  }
+  return "";
+  }
+
+  getEndStop(): string {
+    for (let connection of this.connection.connections) {
+      if (connection.id === this.selectedConnectionId) {
+          return connection.stops[connection.stops.length -1].id
+      }
+  }
+  return "";
+  }
+
   buyTickets(): void {
     for (let place = 0; place < this.seatsInfo.places.length; place++) {
-      this.seatsInfo.places[this.selectedSeats[place].seatNumber - 1].isSelected = true;
+      if (this.selectedSeats[place]) {
+        this.seatsInfo.places[this.selectedSeats[place].seatNumber - 1].isSelected = true;
+      }
     }
-    this.http.post<string>('http://localhost:8080/buy/ticket', new BuyTickets(" ", this.selectedConnectionId, this.getSelectedSeats(), this.connection.cityFrom, this.connection.cityTo, this.totalPrice)).subscribe(
+    this.http.post<string>('http://localhost:8080/buy/ticket', new BuyTickets("",this.selectedConnectionId, this.getSelectedSeats(),this.getStartStop(), this.getEndStop(), this.totalPrice)).subscribe(
       response => {
         console.log('Request successful:', response);
         this.router.navigate(['/cart']);
