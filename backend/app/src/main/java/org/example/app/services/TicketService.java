@@ -20,8 +20,9 @@ public class TicketService {
         return createTicket(userId.orElse(getDummyUser()), courseId, places, startStop, endStop, price);
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     private UUID getDummyUser() {
-        return entityService.userRepository.getAllByUsername("dummy").stream().findFirst().get().getId();
+        return entityService.userRepository.findAllByUsername("dummy").stream().findFirst().get().getId();
     }
 
     private Ticket createTicket(UUID userId, UUID courseId, List<UUID> places, UUID startStop, UUID endStop, double price) throws DomainViolation {
