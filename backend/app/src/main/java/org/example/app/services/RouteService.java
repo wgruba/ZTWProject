@@ -6,8 +6,6 @@ import org.example.app.exceptions.Violations;
 import org.example.app.models.City;
 import org.example.app.models.Route;
 import org.example.app.models.Stop;
-import org.example.app.repositories.RouteRepository;
-import org.example.app.repositories.StopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +29,8 @@ public class RouteService {
     public Route getRouteBetweenCities(UUID startCity, UUID endCity) throws DomainViolation {
         startEndCitiesMustDiffer.throwExIf(startCity.equals(endCity));
         return getRouteBetweenCities(
-                entityService.getEntityById(startCity, City.class),
-                entityService.getEntityById(endCity, City.class)
+                getCity(startCity),
+                getCity(endCity)
         );
     }
 
@@ -46,5 +44,19 @@ public class RouteService {
         if (maybeRoute.isEmpty())
             Violations.routeNotFound.throwEx(startCity.getName(), endCity.getName());
         return maybeRoute.get();
+    }
+
+    public List<Stop> getStopsBetweenCitiesAtRoute(Route route, UUID startCityId, UUID endCityId) {
+        List<Stop> stops = route.orderedStops();
+        List<Stop> startEndStops = stops.stream().filter(stop -> stop.getCity().idEqualsAnyOf(startCityId, endCityId)).toList();
+        if (startEndStops.size() < 2)
+            return List.of();
+        Stop startStop = startEndStops.get(0);
+        Stop endStop = startEndStops.get(1);
+        return stops.subList(stops.indexOf(startStop), stops.indexOf(endStop) + 1);
+    }
+
+    private City getCity(UUID cityId) {
+        return entityService.getEntityById(cityId, City.class);
     }
 }

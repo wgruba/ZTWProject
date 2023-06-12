@@ -13,11 +13,12 @@ public class FoundCourse {
     private final UUID id;
     private final LocalDateTime departureDate;
     private final List<StopInConnection> stops;
-    public FoundCourse(Course course) {
+    private final String routeName;
+    public FoundCourse(Course course, List<Stop> stops) {
         this.id = course.getId();
         this.departureDate = course.getCourseDate();
-        this.stops = course.getRoute().orderedStops().stream().map(
-                stop -> new StopInConnection(stop, course.getCourseDate())).toList();
+        this.stops = stops.stream().map(stop -> new StopInConnection(stop, course.getCourseDate())).toList();
+        this.routeName = course.getRoute().getName();
     }
 
     @Getter

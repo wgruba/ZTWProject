@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:4200/")
@@ -46,12 +47,15 @@ public class RouteSearchController {
 
     @PostMapping("/search/course")
     public ResponseEntity<List<FoundCourse>> getConnections(@Valid @RequestBody SearchCourse searchCourse) {
-        Route route = routeService.getRouteBetweenCities(searchCourse.getStartCity(), searchCourse.getEndCity());
+        UUID startCity = searchCourse.getStartCity();
+        UUID endCIty = searchCourse.getEndCity();
+        Route route = routeService.getRouteBetweenCities(startCity, endCIty);
+        List<Stop> stops = routeService.getStopsBetweenCitiesAtRoute(route, startCity, endCIty);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(courseService.getAllCoursesAtRouteAfterDate(route, searchCourse.getDepartureTime())
-                        .stream().map(FoundCourse::new).toList());
+                        .stream().map(course -> new FoundCourse(course, stops)).toList());
     }
 
     @PostMapping("/search/availability")
