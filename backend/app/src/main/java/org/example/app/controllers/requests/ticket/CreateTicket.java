@@ -5,14 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 @SuppressWarnings("unused")
 public class CreateTicket {
-    @NotNull
-    private UUID userId;
+
+    private Optional<UUID> userId;
     @NotNull
     private UUID courseId;
     @NotNull
@@ -21,4 +22,6 @@ public class CreateTicket {
     private UUID startStopId;
     @NotNull
     private UUID endStopId;
+    @NotNull
+    private double price;
 }

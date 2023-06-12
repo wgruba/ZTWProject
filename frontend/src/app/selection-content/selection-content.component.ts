@@ -19,7 +19,7 @@ interface Seat {
   height: number;
   isReserved: boolean;
   seatNumber: number;
-  onceSelected: boolean;
+  available: boolean;
 }
 
 @Component({
@@ -79,7 +79,7 @@ export class SelectionContentComponent implements OnInit{
       this.seatsInfo = placeInfo; 
     });
 
-    if(this.seatsInfo.places.length > 20){
+    if(this.seatsInfo.places.length > 25){
       this.selectedBus = { type: 'large', numRows: 8, numCols: 5};
     }
     else{
@@ -108,9 +108,11 @@ export class SelectionContentComponent implements OnInit{
           width: this.seatWidth,
           height: this.seatHeight,
           isReserved: false,
-          seatNumber: seatNumber++,
-          onceSelected :false
+          seatNumber: this.seatsInfo.places[seatNumber - 1].nr,
+          available: this.seatsInfo.places[seatNumber - 1].available
         });
+
+        seatNumber++;
 
         this.seats.push({
           x: this.leftmargin + this.padding + this.aisleWidth + (col + 2) * (this.seatWidth + this.padding),
@@ -118,9 +120,11 @@ export class SelectionContentComponent implements OnInit{
           width: this.seatWidth,
           height: this.seatHeight,
           isReserved: false,
-          seatNumber: seatNumber++,
-          onceSelected: false,
+          seatNumber: this.seatsInfo.places[seatNumber - 1].nr,
+          available: this.seatsInfo.places[seatNumber - 1].available
         });
+
+        seatNumber++;
       }
     }
 
@@ -132,16 +136,17 @@ export class SelectionContentComponent implements OnInit{
         width: this.seatWidth,
         height: this.seatHeight,
         isReserved: false,
-        seatNumber: seatNumber++,
-        onceSelected: false,
+        seatNumber: this.seatsInfo.places[seatNumber - 1].nr,
+        available: this.seatsInfo.places[seatNumber - 1].available
       });
+      seatNumber++;
     }
   }
 
   private drawSeats(): void {
     this.seats.forEach(seat => {
       if(this.ctx instanceof CanvasRenderingContext2D){
-        this.ctx.fillStyle = seat.isReserved ? 'red' : 'green';
+        this.ctx.fillStyle = seat.available ? (seat.isReserved ? 'red' : 'green') : 'grey';
         this.ctx.fillRect(seat.x, seat.y, seat.width, seat.height);
 
         // Draw seat number
@@ -164,7 +169,8 @@ export class SelectionContentComponent implements OnInit{
       y >= seat.y && y <= seat.y + seat.height);
   
     if (clickedSeat) {
-      if (clickedSeat.isReserved) {
+      if (clickedSeat.available) {
+        if (clickedSeat.isReserved) {
         const index = this.selectedSeats.indexOf(clickedSeat);
         if (index > -1) {
           this.selectedSeats.splice(index, 1);
@@ -178,6 +184,8 @@ export class SelectionContentComponent implements OnInit{
       
       clickedSeat.isReserved = !clickedSeat.isReserved;
       this.drawSeats();
+      }
+      
     }
   }
 

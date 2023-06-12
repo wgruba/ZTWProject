@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.example.app.exceptions.Violations.startEndCitiesMustDiffer;
+
 @Service
 @AllArgsConstructor
 public class RouteService {
@@ -27,6 +29,7 @@ public class RouteService {
 
 
     public Route getRouteBetweenCities(UUID startCity, UUID endCity) throws DomainViolation {
+        startEndCitiesMustDiffer.throwExIf(startCity.equals(endCity));
         return getRouteBetweenCities(
                 entityService.getEntityById(startCity, City.class),
                 entityService.getEntityById(endCity, City.class)

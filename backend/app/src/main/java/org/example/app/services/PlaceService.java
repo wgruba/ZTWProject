@@ -20,7 +20,8 @@ public class PlaceService {
     }
 
     public List<Availability> getIntersectingAvailabilities(Place place, Distance distance) {
-        return entityService.availabilityRepository.findAllByPlace(place).stream().filter(
-                availability -> availability.getDistance().checkIfIntersect(distance)).toList();
+        List<Availability> av = entityService.availabilityRepository.findAllByPlace(place);
+
+        return av.stream().filter(availability -> availability.getDistance().checkIfIntersect(distance)).toList();
     }
 }

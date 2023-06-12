@@ -11,4 +11,6 @@ public class Violations {
             new DomainViolationBuilder("There is no entity of class %% in database", HttpStatus.NOT_FOUND);
     public static DomainViolationBuilder distanceAtCourseNotFound =
             new DomainViolationBuilder("Course doesn't go through cities with ids %% and %%", HttpStatus.BAD_REQUEST);
+    public static DomainViolationBuilder startEndCitiesMustDiffer =
+            new DomainViolationBuilder("Selected start and end Cities must be different", HttpStatus.BAD_REQUEST);
 }

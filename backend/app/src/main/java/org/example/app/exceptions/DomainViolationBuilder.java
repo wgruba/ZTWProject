@@ -23,6 +23,10 @@ public class DomainViolationBuilder {
         build(args).throwEx();
     }
 
+    public void throwExIf(boolean condition, String...args) {
+        build(args).throwExIf(condition);
+    }
+
     private void replaceNext(String arg) {
         message = message.replaceFirst("%%", arg);
     }

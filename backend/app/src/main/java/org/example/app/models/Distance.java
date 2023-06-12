@@ -50,7 +50,8 @@ public class Distance {
         if (!startStop.getRoute().equals(other.startStop.getRoute()))
             return false;
 
-        return endStop.isStopBefore(other.startStop) || other.endStop.isStopBefore(startStop);
+        return (startStop.isStopBefore(other.startStop) && other.startStop.isStopBefore(endStop)) ||
+                (other.startStop.isStopBefore(startStop) && startStop.isStopBefore(other.endStop));
     }
 
 }

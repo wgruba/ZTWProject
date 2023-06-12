@@ -37,6 +37,6 @@ public class Stop {
     }
 
     public boolean isStopBefore(Stop other) {
-        return travellingTimeFromStart <= other.travellingTimeFromStart;
+        return travellingTimeFromStart < other.travellingTimeFromStart;
     }
 }

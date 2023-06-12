@@ -9,4 +9,3 @@ Drop table User;
 Drop table Course;
 Drop table Route;
 Drop table Bus;
-

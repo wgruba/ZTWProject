@@ -1,10 +1,12 @@
 export class PlaceInfo{
     placeId: string;
+    nr: number;
     available: boolean;
     isSelected: boolean = false;
 
-    constructor(placeId: string, available: boolean) {
+    constructor(placeId: string, nr: number, available: boolean) {
         this.placeId = placeId;
+        this.nr = nr;
         this.available = available;
     }
 }

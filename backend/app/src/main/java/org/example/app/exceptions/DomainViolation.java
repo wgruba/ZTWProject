@@ -13,7 +13,12 @@ public class DomainViolation extends RuntimeException{
         httpStatus = status;
     }
 
-    public void throwEx() throws DomainViolation{
+    protected void throwEx() throws DomainViolation{
         throw this;
+    }
+
+    public void throwExIf(boolean condition) {
+        if (condition)
+            throw this;
     }
 }

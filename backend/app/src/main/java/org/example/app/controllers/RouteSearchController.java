@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -67,6 +68,7 @@ public class RouteSearchController {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(places.stream().map(place ->
                                 new PlaceInfo(place, placeService.getIntersectingAvailabilities(place, dummyDistance)))
+                        .sorted(Comparator.comparingInt(PlaceInfo::getNr))
                         .toList());
     }
 

@@ -21,6 +21,9 @@ public class Place {
     @GeneratedValue
     private UUID id;
 
+    @Column(name = "nr")
+    private int nr;
+
     @ManyToOne
     @JoinColumn(name = "course")
     private Course course;
@@ -29,7 +32,13 @@ public class Place {
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
     private List<Availability> availabilityList;
 
-    public Place(Course course) {
+    public Place(Course course, int nr) {
         this.course = course;
+        this.nr = nr;
+    }
+
+    @Override
+    public String toString() {
+        return "Place(" + nr + ", " + id.toString() + ")";
     }
 }

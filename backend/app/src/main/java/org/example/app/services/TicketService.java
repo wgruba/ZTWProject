@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -15,21 +16,29 @@ public class TicketService {
     @Autowired
     private EntityService entityService;
 
-    public Ticket createTicket(UUID userId, UUID courseId, List<UUID> places, UUID startStop, UUID endStop) throws DomainViolation {
+    public Ticket buyTicket(Optional<UUID> userId, UUID courseId, List<UUID> places, UUID startStop, UUID endStop, double price) throws DomainViolation {
+        return createTicket(userId.orElse(getDummyUser()), courseId, places, startStop, endStop, price);
+    }
+
+    private UUID getDummyUser() {
+        return entityService.userRepository.getAllByUsername("dummy").stream().findFirst().get().getId();
+    }
+
+    private Ticket createTicket(UUID userId, UUID courseId, List<UUID> places, UUID startStop, UUID endStop, double price) throws DomainViolation {
         return createTicket(
                 entityService.getEntityById(userId, User.class),
                 entityService.getEntityById(courseId, Course.class),
                 new Distance(
                         entityService.getEntityById(startStop, Stop.class),
                         entityService.getEntityById(endStop, Stop.class)),
-                places.stream().map(placeId -> entityService.getEntityById(placeId, Place.class)).toList()
+                places.stream().map(placeId -> entityService.getEntityById(placeId, Place.class)).toList(),
+                price
                 );
     }
 
-    private Ticket createTicket(User user, Course course, Distance distance, List<Place> selectedPlaces) throws DomainViolation{
-        int price = distance.getTravelingTimeBetweenStops() / 10 * selectedPlaces.size();
-        Ticket newTicket = entityService.save(new Ticket(user, price, course, distance));
+    private Ticket createTicket(User user, Course course, Distance distance, List<Place> selectedPlaces, double price) throws DomainViolation{
         Distance newDistance = entityService.save(distance);
+        Ticket newTicket = entityService.save(new Ticket(user, price, course, newDistance));
         selectedPlaces.forEach(place -> {
             entityService.save(new ReservedPlace(newTicket, place));
             entityService.save(new Availability(newDistance, place));
