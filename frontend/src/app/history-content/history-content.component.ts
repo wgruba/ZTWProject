@@ -2,6 +2,11 @@ import { Component, Input ,OnInit} from '@angular/core';
 import { BuyTickets } from '../models/request-models/buyTicket';
 import { DataService } from '../data.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { TicketInfo } from '../models/ticketInfo';
+import { User } from '../models/user';
+
+
+
 
 
 @Component({
@@ -11,20 +16,32 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 })
 export class HistoryContentComponent {
   public myAngularxQrCode: string = "";
-  tickets =  [new BuyTickets("sdasd","sadasda",["sad"],"sdaa","sdadaa",0),new BuyTickets("sdasd2","sadasda2",["sad2"],"sdaa2","sdadaa2",0)]
+  user: User;
+  tickets: TicketInfo[];
 
-  constructor (private http: HttpClient) {
+  constructor (private http: HttpClient, private dataService: DataService) {
+    this.dataService.userInfo.subscribe(userInfo => {
+      this.user = userInfo; 
+    });
   }
 
   ngOnInit(): void {
-    this.http.get<string>('https://openidconnect.googleapis.com/v1/userinfo',).subscribe(
+    const body = { username: this.user.email }; 
+    this.http.post<TicketInfo[]>('http://localhost:8080/history', body).subscribe(
       response => {
+        this.tickets= response.map(item => new TicketInfo(
+          item.routeName,
+          item.startCityName,
+          item.endCityName,
+          item.price,
+          new Date(item.departureTime),
+          item.qrCode  ));
         console.log('Request successful:', response);
       },
     );
   }
 
-  generateQRCode(ticket: BuyTickets) {
-    this.myAngularxQrCode = ticket.username;
+  generateQRCode(ticket: TicketInfo) {
+    ticket.generatedQRCode = ticket.qrCode;
   }
 }
