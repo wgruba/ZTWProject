@@ -39,16 +39,16 @@ public class LoadTestDataService {
         Stop krakow1 = entityService.save(new Stop(0, krakow_warszawa, krakow));
 
         Course[] course_wk = {
-                entityService.save(new Course(LocalDateTime.of(2023, 6, 1, 12, 0), longBus, warszawa_krakow)),
-                entityService.save(new Course(LocalDateTime.of(2023, 6, 2, 12, 0), longBus, warszawa_krakow)),
-                entityService.save(new Course(LocalDateTime.of(2023, 6, 3, 12, 0), longBus, warszawa_krakow)),
-                entityService.save(new Course(LocalDateTime.of(2023, 6, 4, 12, 0), longBus, warszawa_krakow))};
+                entityService.save(new Course(LocalDateTime.of(2023, 7, 1, 12, 0), longBus, warszawa_krakow)),
+                entityService.save(new Course(LocalDateTime.of(2023, 7, 2, 12, 0), longBus, warszawa_krakow)),
+                entityService.save(new Course(LocalDateTime.of(2023, 7, 3, 12, 0), longBus, warszawa_krakow)),
+                entityService.save(new Course(LocalDateTime.of(2023, 7, 4, 12, 0), longBus, warszawa_krakow))};
 
         Course[] course_kw = {
-                entityService.save(new Course(LocalDateTime.of(2023, 6, 1, 12, 0), shortBus, krakow_warszawa)),
-                entityService.save(new Course(LocalDateTime.of(2023, 6, 2, 12, 0), shortBus, krakow_warszawa)),
-                entityService.save(new Course(LocalDateTime.of(2023, 6, 3, 12, 0), shortBus, krakow_warszawa)),
-                entityService.save(new Course(LocalDateTime.of(2023, 6, 4, 12, 0), shortBus, krakow_warszawa))};
+                entityService.save(new Course(LocalDateTime.of(2023, 7, 1, 12, 0), shortBus, krakow_warszawa)),
+                entityService.save(new Course(LocalDateTime.of(2023, 7, 2, 12, 0), shortBus, krakow_warszawa)),
+                entityService.save(new Course(LocalDateTime.of(2023, 7, 3, 12, 0), shortBus, krakow_warszawa)),
+                entityService.save(new Course(LocalDateTime.of(2023, 7, 4, 12, 0), shortBus, krakow_warszawa))};
 
         Place[][] places1 = new Place[4][37];
         Place[][] places2 = new Place[4][25];
