@@ -1,0 +1,17 @@
+<div *ngFor="let ticket of this.tickets">
+    <div class='ticket__container'>
+        <div>
+            <h2>Ticket for seat: {{ ticket.placesIds }}</h2>
+            <p>Price: {{ ticket.price }} </p>
+            <p>Start stop: {{ ticket }} </p>
+            <p>End stop: {{ ticket }} </p>
+            <p>Departure time: {{ ticket }} </p>
+        </div>
+        <div>
+            <button (click)="generateQRCode(ticket)">Generate QR Code</button>
+        </div>
+        <div *ngIf="ticket.courseId" >
+            <qrcode class= "left" [qrdata]="myAngularxQrCode" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        </div>
+    </div>
+</div>

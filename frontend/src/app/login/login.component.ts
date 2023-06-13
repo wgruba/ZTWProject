@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
+import { lastValueFrom } from 'rxjs';
 import { GoogleApiService, UserInfo } from '../google-api.service';
 
 
 @Component({
-  selector: 'app-home-site',
-  templateUrl: './home-site.component.html',
-  styleUrls: ['./home-site.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class HomeSiteComponent {
 
+export class LoginComponent {
   title = 'angular-google-oauth-example';
 
   mailSnippets: string[] = []
