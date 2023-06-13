@@ -238,6 +238,19 @@ export class SelectionContentComponent implements OnInit{
   return "";
   }
 
+  getMiddleStopNames(): string[] {
+    for (let connection of this.connection.connections) {
+      if (connection.id === this.selectedConnectionId) {
+        // Removing first and last elements using slice
+        let middleStops = connection.stops.slice(1, connection.stops.length - 1);
+        // Mapping to get only city names
+        let stopNames = middleStops.map(stop => stop.cityName);
+        return stopNames;
+      }
+    }
+    return [];
+  }
+
   getEndStop(): string {
     for (let connection of this.connection.connections) {
       if (connection.id === this.selectedConnectionId) {

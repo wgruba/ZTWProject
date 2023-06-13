@@ -6,6 +6,7 @@ import { DataService } from './data.service';
 import { User } from './models/user';
 
 
+
 const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
   issuer: 'https://accounts.google.com',
@@ -46,7 +47,7 @@ export class GoogleApiService {
   userInfo: UserInfo;
   user: User;
 
-  constructor(private readonly oAuthService: OAuthService, private readonly httpClient: HttpClient, private dataService: DataService) {
+  constructor(private readonly oAuthService: OAuthService, private readonly httpClient: HttpClient, private dataService: DataService,private http: HttpClient) {
     // confiure oauth2 service
     oAuthService.configure(authCodeFlowConfig);
     // manually configure a logout url, because googles discovery document does not provide it
@@ -70,12 +71,15 @@ export class GoogleApiService {
             this.userProfileSubject.next(userProfile as UserInfo)
             this.user = new User(info.info.sub,info.info.name,info.info.picture,info.info.email)
             this.dataService.changeUserInfo(this.user);
-          })
-        }
-
-      })
-    });
-  }
+            const body = { username: this.user.email }; 
+            this.http.post<Object>('http://localhost:8080/userinfo', body).subscribe(
+                response => {
+                  console.log('Request successful:', response)})
+        })
+      }
+    })
+  });
+}
 
   emails(userId: string): Observable<any> {
     return this.httpClient.get(`${this.gmail}/gmail/v1/users/${userId}/messages`, { headers: this.authHeader() })

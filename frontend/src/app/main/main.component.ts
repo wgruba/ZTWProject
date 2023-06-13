@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http'
 import { City } from '../models/city';
@@ -6,6 +6,7 @@ import { SearchCourse } from '../models/request-models/searchCourse';
 import { ConenctionWithCityId, Connection } from '../models/connection';
 import { DataService } from '../data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from '../models/user';
 
 
 
@@ -19,10 +20,20 @@ export class MainComponent {
   selectedCityTo: City = new City("", "");
   selectedDepartureDate: Date = new Date;
   cities: City[] = [];
+  user: User;
   @Output() availableConnetions = new EventEmitter<ConenctionWithCityId>;
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar, private router: Router, private dataService: DataService) {
     this.retrieveCityList();
+  }
+
+  ngOnInit(): void {
+    const body = { username: this.user.email }; 
+    this.http.post<Object>('http://localhost:8080/userinfo', body).subscribe(
+      response => {
+        console.log('Request successful:', response);
+      },
+    );
   }
 
   retrieveCityList() {
