@@ -3,6 +3,7 @@ package org.example.app.controllers;
 import jakarta.validation.Valid;
 import org.example.app.controllers.requests.ticket.CreateTicket;
 import org.example.app.controllers.requests.Username;
+import org.example.app.controllers.responses.ticket.NewTicket;
 import org.example.app.controllers.responses.ticket.TicketInfo;
 import org.example.app.models.Ticket;
 import org.example.app.services.TicketService;
@@ -25,7 +26,7 @@ public class TicketController {
     @Autowired
     TicketService ticketService;
     @PostMapping("/buy/ticket")
-    public ResponseEntity<String> buyTicket(@Valid @RequestBody CreateTicket createTicket) {
+    public ResponseEntity<NewTicket> buyTicket(@Valid @RequestBody CreateTicket createTicket) {
         Ticket ticket = ticketService.buyTicket(
                 createTicket.getUsername(),
                 createTicket.getCourseId(),
@@ -36,7 +37,7 @@ public class TicketController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body("Ticket was bought");
+                .body(new NewTicket(ticket));
     }
 
     @PostMapping("/history")
