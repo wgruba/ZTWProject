@@ -31,6 +31,8 @@ import { HistorySiteComponent } from './history-site/history-site.component';
 import { HistoryContentComponent } from './history-content/history-content.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { LoginComponent } from './login/login.component';
+import { GoogleMapsModule } from '@angular/google-maps'
+
 
 
 @NgModule({
@@ -64,6 +66,7 @@ import { LoginComponent } from './login/login.component';
     HttpClientModule,
     BrowserAnimationsModule,
     QRCodeModule,
+    GoogleMapsModule,
     OAuthModule.forRoot(),
     RouterModule.forRoot([
       {path: '', component: HomeSiteComponent},

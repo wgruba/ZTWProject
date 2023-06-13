@@ -6,8 +6,7 @@ import { Router } from '@angular/router';
 import { ConenctionWithCityId, Connection } from '../models/connection';
 import { BuyTickets } from '../models/request-models/buyTicket';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-
+declare var google: any;
 
 interface Bus {
   type: string;
@@ -33,8 +32,12 @@ interface Seat {
 
 export class SelectionContentComponent implements OnInit{
   @ViewChild('canvas', { static: true })
+  canvas: ElementRef<HTMLCanvasElement>;
 
-  canvas: ElementRef<HTMLCanvasElement>;  
+  @ViewChild('mapElement', { static: true })
+  mapElement: ElementRef;
+
+  private map: any;
   private ctx: CanvasRenderingContext2D | null;
   private seats: Seat[] = [];
   selectedSeats: Seat[] = [];
@@ -85,6 +88,7 @@ export class SelectionContentComponent implements OnInit{
     this.dataService.currentConnection.subscribe(currentConnection => {
       this.connection = currentConnection; 
     });
+
     if(this.seatsInfo.places.length > 25){
       this.selectedBus = { type: 'large', numRows: 8, numCols: 5};
     }
@@ -101,6 +105,7 @@ export class SelectionContentComponent implements OnInit{
       this.generateSeats(this.selectedBus)
       this.drawSeats();
   }
+  this.initMap();
 }
 
   private generateSeats(bus: Bus): void {
@@ -241,5 +246,41 @@ export class SelectionContentComponent implements OnInit{
         }
       }
     );
+  }
+
+  initMap() {
+    const mapProperties = {
+      center: new google.maps.LatLng(35.2271, -80.8431),
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapProperties);
+
+    // Assuming you have your origin and destination lat/lng
+    const origin = { lat: 35.2271, lng: -80.8431 };
+    const destination = { lat: 34.0522, lng: -118.2437 };
+
+    // Create the directions service and renderer
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+
+    // Set the map
+    directionsRenderer.setMap(this.map);
+
+    // Create the directions request
+    const request = {
+      origin: origin,
+      destination: destination,
+      travelMode: 'DRIVING'
+    };
+
+    // Get the route from the directions service and set it on the renderer
+    directionsService.route(request, function(result: google.maps.DirectionsResult, status: google.maps.DirectionsStatus) {
+      if (status == 'OK') {
+        directionsRenderer.setDirections(result);
+
+      }
+    });
   }
 }

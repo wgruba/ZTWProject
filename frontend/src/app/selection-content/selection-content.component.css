@@ -9,7 +9,7 @@
     position: fixed;
     width: 95%;
     height: 70%;
-    margin: 20px;
+    margin: 10px;
 }
 
 .content__left {
@@ -34,23 +34,23 @@ i {
     font-size: 100px; 
     color: #ffffff;
     margin-top: -300px;
-    margin-left: 200px;
+    margin-left: 50px;
     margin-bottom: 20px;
   }
 
 canvas { 
     display: flex;
     border-radius: 40px;
-    margin-right: 100px;
+    margin-right: 50px;
 }
 
 .summary {
     background-color: lightblue;
     color: white;
     padding: 20px;
-    width: 100%;
+    width: 50%;
     height: 300px;
-    margin-right: 400px;
+    margin-right: 10px;
     border-radius: 20px;
   }
   
