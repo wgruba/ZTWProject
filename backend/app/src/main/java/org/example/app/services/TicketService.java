@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -15,19 +14,20 @@ import java.util.UUID;
 public class TicketService {
     @Autowired
     private EntityService entityService;
+    @Autowired
+    private UserService userService;
 
-    public Ticket buyTicket(Optional<UUID> userId, UUID courseId, List<UUID> places, UUID startStop, UUID endStop, double price) throws DomainViolation {
-        return createTicket(userId.orElse(getDummyUser()), courseId, places, startStop, endStop, price);
+    public Ticket buyTicket(String username, UUID courseId, List<UUID> places, UUID startStop, UUID endStop, double price) throws DomainViolation {
+        return buyTicket(userService.getUser(username), courseId, places, startStop, endStop, price);
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    private UUID getDummyUser() {
-        return entityService.userRepository.findAllByUsername("dummy").stream().findFirst().get().getId();
+    public Ticket buyTicket(UUID userid, UUID courseId, List<UUID> places, UUID startStop, UUID endStop, double price) throws DomainViolation {
+        return buyTicket(entityService.getEntityById(userid, User.class), courseId, places, startStop, endStop, price);
     }
 
-    private Ticket createTicket(UUID userId, UUID courseId, List<UUID> places, UUID startStop, UUID endStop, double price) throws DomainViolation {
+    public Ticket buyTicket(User user, UUID courseId, List<UUID> places, UUID startStop, UUID endStop, double price) throws DomainViolation {
         return createTicket(
-                entityService.getEntityById(userId, User.class),
+                user,
                 entityService.getEntityById(courseId, Course.class),
                 new Distance(
                         entityService.getEntityById(startStop, Stop.class),
@@ -47,15 +47,20 @@ public class TicketService {
         return newTicket;
     }
 
-    public List<Ticket> getTicketsByUser(User user) {
-        return entityService.ticketRepository.findAllByUser(user);
+    public List<Ticket> getTicketsByUser(String username) {
+        User user = userService.getUser(username);
+        return getTicketsByUser(user);
     }
 
+    private List<Ticket> getTicketsByUser(User user) {
+        return user.getTickets();
+    }
+/*
     public Ticket getTicket(UUID id) throws DomainViolation {
         return entityService.getEntityById(id, Ticket.class);
     }
 
     public boolean isTicketForCourse(Ticket ticket, Course course) {
         return ticket.getCourse().equals(course);
-    }
+    }*/
 }

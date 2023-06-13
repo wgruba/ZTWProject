@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LoadTestDataService {
@@ -66,13 +64,13 @@ public class LoadTestDataService {
         }
 
         for(int i = 0; i < 4; i++) {
-            ticketService.buyTicket(Optional.of(user.getId()), course_wk[i].getId(), List.of(places1[i][0].getId(), places1[i][1].getId()), warszawa0.getId(), poznan0.getId(), 1);
-            ticketService.buyTicket(Optional.of(user.getId()), course_wk[i].getId(), List.of(places1[i][5].getId(), places1[i][6].getId()), warszawa0.getId(), wroclaw0.getId(), 1);
+            ticketService.buyTicket(user, course_wk[i].getId(), List.of(places1[i][0].getId(), places1[i][1].getId()), warszawa0.getId(), poznan0.getId(), 1);
+            ticketService.buyTicket(user, course_wk[i].getId(), List.of(places1[i][5].getId(), places1[i][6].getId()), warszawa0.getId(), wroclaw0.getId(), 1);
         }
 
         for(int i = 0; i < 4; i++) {
-            ticketService.buyTicket(Optional.of(user.getId()), course_kw[i].getId(), List.of(places2[i][0].getId(), places2[i][1].getId()), poznan1.getId(), warszawa1.getId(), 1);
-            ticketService.buyTicket(Optional.of(user.getId()), course_kw[i].getId(), List.of(places2[i][5].getId(), places2[i][6].getId()), wroclaw1.getId(), warszawa1.getId(), 1);
+            ticketService.buyTicket(user, course_kw[i].getId(), List.of(places2[i][0].getId(), places2[i][1].getId()), poznan1.getId(), warszawa1.getId(), 1);
+            ticketService.buyTicket(user, course_kw[i].getId(), List.of(places2[i][5].getId(), places2[i][6].getId()), wroclaw1.getId(), warszawa1.getId(), 1);
         }
     }
 }

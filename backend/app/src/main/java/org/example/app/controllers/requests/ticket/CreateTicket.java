@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -13,7 +12,8 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class CreateTicket {
 
-    private Optional<UUID> userId;
+    @NotNull
+    private String username;
     @NotNull
     private UUID courseId;
     @NotNull
