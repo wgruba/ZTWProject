@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/userinfo")
     public ResponseEntity<UUID> userWasLogged(@Valid @RequestBody Username username) {
         UUID id = userService.getUserId(username.getUsername());
         return ResponseEntity
