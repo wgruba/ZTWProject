@@ -1,11 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PlaceInfo, PlaceInfoWithCourseStops } from '../models/placeInfo';
 import { DataService } from '../data.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ConenctionWithCityId, Connection } from '../models/connection';
 import { BuyTickets } from '../models/request-models/buyTicket';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from '../models/user';
 declare var google: any;
 
 interface Bus {
@@ -37,6 +38,7 @@ export class SelectionContentComponent implements OnInit{
   @ViewChild('mapElement', { static: true })
   mapElement: ElementRef;
 
+
   private map: any;
   private ctx: CanvasRenderingContext2D | null;
   private seats: Seat[] = [];
@@ -53,14 +55,13 @@ export class SelectionContentComponent implements OnInit{
   selectedDate: string;
   selectedBus: Bus = { type: 'none', numRows: 0, numCols: 0};
   seatsInfo: PlaceInfoWithCourseStops;
-  connection: ConenctionWithCityId ;
-
+  connection: ConenctionWithCityId;
+  user: User;
 
   canvasHeight = 100;
   canvasWidth = 100;
 
-  constructor(private http: HttpClient,private snackBar: MatSnackBar ,private dataService: DataService, private router: Router) {
-  
+  constructor(private http: HttpClient,private snackBar: MatSnackBar ,private dataService: DataService, private router: Router,) {
   }
 
   ngOnInit(): void {
@@ -87,6 +88,12 @@ export class SelectionContentComponent implements OnInit{
     });
     this.dataService.currentConnection.subscribe(currentConnection => {
       this.connection = currentConnection; 
+    });
+    this.dataService.currentConnection.subscribe(currentConnection => {
+      this.connection = currentConnection; 
+    });
+    this.dataService.userInfo.subscribe(userInfo => {
+      this.user = userInfo; 
     });
 
     if(this.seatsInfo.places.length > 25){
@@ -213,6 +220,24 @@ export class SelectionContentComponent implements OnInit{
   return "";
   }
 
+  getStartStopName(): string {
+    for (let connection of this.connection.connections) {
+      if (connection.id === this.selectedConnectionId) {
+          return connection.stops[0].cityName
+      }
+  }
+  return "";
+  }
+
+  getEndStopName(): string {
+    for (let connection of this.connection.connections) {
+      if (connection.id === this.selectedConnectionId) {
+          return connection.stops[connection.stops.length -1].cityName
+      }
+  }
+  return "";
+  }
+
   getEndStop(): string {
     for (let connection of this.connection.connections) {
       if (connection.id === this.selectedConnectionId) {
@@ -228,7 +253,7 @@ export class SelectionContentComponent implements OnInit{
         this.seatsInfo.places[this.selectedSeats[place].seatNumber - 1].isSelected = true;
       }
     }
-    this.http.post<string>('http://localhost:8080/buy/ticket', new BuyTickets("",this.selectedConnectionId, this.getSelectedSeats(),this.getStartStop(), this.getEndStop(), this.totalPrice)).subscribe(
+      this.http.post<Object>('http://localhost:8080/buy/ticket', new BuyTickets(this.user.email,this.selectedConnectionId, this.getSelectedSeats(),this.getStartStop(), this.getEndStop(), this.totalPrice)).subscribe(
       response => {
         console.log('Request successful:', response);
         this.router.navigate(['/cart']);
@@ -246,7 +271,7 @@ export class SelectionContentComponent implements OnInit{
         }
       }
     );
-  }
+}
 
   initMap() {
     const mapProperties = {
@@ -258,8 +283,8 @@ export class SelectionContentComponent implements OnInit{
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapProperties);
 
     // Assuming you have your origin and destination lat/lng
-    const origin = { lat: 35.2271, lng: -80.8431 };
-    const destination = { lat: 34.0522, lng: -118.2437 };
+    const origin = this.getStartStopName();
+    const destination = this.getEndStopName();
 
     // Create the directions service and renderer
     const directionsService = new google.maps.DirectionsService();

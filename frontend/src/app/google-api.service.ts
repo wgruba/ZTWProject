@@ -2,6 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { Observable, Subject } from 'rxjs';
+import { DataService } from './data.service';
+import { User } from './models/user';
+
 
 const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -40,8 +43,10 @@ export class GoogleApiService {
   gmail = 'https://gmail.googleapis.com'
 
   userProfileSubject = new Subject<UserInfo>()
+  userInfo: UserInfo;
+  user: User;
 
-  constructor(private readonly oAuthService: OAuthService, private readonly httpClient: HttpClient) {
+  constructor(private readonly oAuthService: OAuthService, private readonly httpClient: HttpClient, private dataService: DataService) {
     // confiure oauth2 service
     oAuthService.configure(authCodeFlowConfig);
     // manually configure a logout url, because googles discovery document does not provide it
@@ -61,7 +66,10 @@ export class GoogleApiService {
           oAuthService.initLoginFlow()
         } else {
           oAuthService.loadUserProfile().then( (userProfile) => {
+            var info = userProfile as UserInfo
             this.userProfileSubject.next(userProfile as UserInfo)
+            this.user = new User(info.info.sub,info.info.name,info.info.picture,info.info.email)
+            this.dataService.changeUserInfo(this.user);
           })
         }
 

@@ -1,13 +1,13 @@
 export class BuyTickets {
-    userId: string;
+    username: string;
     courseId: string;
     placesIds: string[];
     startStopId: string;
     endStopId: string;
     price: number;
 
-    constructor(userId: string, courseId: string, placesIds: string[] , startStopId: string, endStopId: string, price: number) {
-        this.userId = userId;
+    constructor(username: string, courseId: string, placesIds: string[] , startStopId: string, endStopId: string, price: number) {
+        this.username = username;
         this.courseId = courseId;
         this.placesIds = placesIds;
         this.startStopId = startStopId;

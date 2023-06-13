@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ConenctionWithCityId } from './models/connection';
+import { User } from './models/user';
 import { PlaceInfo, PlaceInfoWithCourseStops } from './models/placeInfo';
 
 
@@ -14,6 +15,7 @@ export class DataService {
   private placeInfoSource = new BehaviorSubject(new PlaceInfoWithCourseStops([],'','',''));
   private routeNameSource = new BehaviorSubject<string>("");
   private userIdSource = new BehaviorSubject<string>("");
+  private userInfoSource = new BehaviorSubject(new User("","","",""))
 
 
   currentConnection = this.connectionSource.asObservable();
@@ -22,7 +24,7 @@ export class DataService {
   placeInfo = this.placeInfoSource.asObservable();
   routeName = this.routeNameSource.asObservable();
   userId  = this.userIdSource.asObservable();
-
+  userInfo = this.userInfoSource.asObservable();
 
   constructor() { }
 
@@ -44,5 +46,8 @@ export class DataService {
   }
   changeUserId(userId: string) {
     this.userIdSource.next(userId);
+  }
+  changeUserInfo(userInfo: User) {
+    this.userInfoSource.next(userInfo);
   }
 }
