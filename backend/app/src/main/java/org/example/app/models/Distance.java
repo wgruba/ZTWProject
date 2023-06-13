@@ -51,7 +51,8 @@ public class Distance {
             return false;
 
         return (startStop.isStopBefore(other.startStop) && other.startStop.isStopBefore(endStop)) ||
-                (other.startStop.isStopBefore(startStop) && startStop.isStopBefore(other.endStop));
+                (other.startStop.isStopBefore(startStop) && startStop.isStopBefore(other.endStop)) ||
+                other.startStop.isTheSame(startStop) || other.endStop.isTheSame(endStop);
     }
 
 }

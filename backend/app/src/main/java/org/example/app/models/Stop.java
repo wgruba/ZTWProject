@@ -39,4 +39,8 @@ public class Stop {
     public boolean isStopBefore(Stop other) {
         return travellingTimeFromStart < other.travellingTimeFromStart;
     }
+
+    public boolean isTheSame(Stop other) {
+        return travellingTimeFromStart == other.travellingTimeFromStart;
+    }
 }
