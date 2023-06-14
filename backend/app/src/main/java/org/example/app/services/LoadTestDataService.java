@@ -13,9 +13,14 @@ public class LoadTestDataService {
     private EntityService entityService;
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private UserService userService;
+
+
     public void loadTestData() {
 
-        User user = entityService.save(new User("dummy", ""));
+
+        User user = userService.getUser("dummy");
 
         Bus longBus = entityService.save(new Bus(Bus.BusType.Long));
         Bus shortBus = entityService.save(new Bus(Bus.BusType.Short));
