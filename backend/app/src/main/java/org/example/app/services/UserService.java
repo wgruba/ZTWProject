@@ -4,6 +4,7 @@ import org.example.app.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -16,8 +17,10 @@ public class UserService {
     }
 
     public User getUser(String username) {
-        return entityService.userRepository.findAllByUsername(username).stream().findFirst().orElse(
-                entityService.save(new User(username, ""))
-        );
+        Optional<User> maybeUser = entityService.userRepository.findAllByUsername(username).stream().findFirst();
+        if (maybeUser.isPresent())
+            return maybeUser.get();
+
+        return entityService.save(new User(username, ""));
     }
 }
