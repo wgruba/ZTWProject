@@ -1,0 +1,51 @@
+p {
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+}
+
+.content {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: row;
+}
+
+i {
+  font-size: 44px; 
+  color: #ffffff; 
+}
+h4 {
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+button {
+  display: block;
+  width: 200px;
+  height: 40px;
+  background-color: #FF4500;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  font-size: 16px;
+  margin: 20px auto;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.card {
+  background-color: #000080; /* Dark blue background */
+  border-radius: 20px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Card-like box shadow */
+}
+
+.card div {
+  margin-bottom: 10px;
+}

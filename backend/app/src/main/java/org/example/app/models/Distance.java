@@ -1,6 +1,7 @@
 package org.example.app.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,11 @@ public class Distance {
     @JoinColumn(name = "endStop")
     private Stop endStop;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "distance", fetch = FetchType.LAZY)
     private List<Availability> availabilityList;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "distance", fetch = FetchType.LAZY)
     private List<Ticket> tickets;
 
@@ -41,6 +44,15 @@ public class Distance {
 
     public int getTravelingTimeBetweenStops() {
         return endStop.getTravellingTimeFromStart() - startStop.getTravellingTimeFromStart();
+    }
+
+    public boolean checkIfIntersect(Distance other) {
+        if (!startStop.getRoute().equals(other.startStop.getRoute()))
+            return false;
+
+        return (startStop.isStopBefore(other.startStop) && other.startStop.isStopBefore(endStop)) ||
+                (other.startStop.isStopBefore(startStop) && startStop.isStopBefore(other.endStop)) ||
+                other.startStop.isTheSame(startStop) || other.endStop.isTheSame(endStop);
     }
 
 }

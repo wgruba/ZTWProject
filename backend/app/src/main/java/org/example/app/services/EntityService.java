@@ -56,7 +56,7 @@ public class EntityService {
         JpaRepository<Entity, UUID> repo = classToRepository(entityClass);
         Optional<Entity> maybeEntity = repo.findById(id);
         if (maybeEntity.isEmpty())
-            Violations.entityNotFound.throwEx(entityClass.getName(), id.toString());
+            Violations.entityNotFound.throwEx(entityClass.getSimpleName(), id.toString());
         return maybeEntity.get();
     }
 

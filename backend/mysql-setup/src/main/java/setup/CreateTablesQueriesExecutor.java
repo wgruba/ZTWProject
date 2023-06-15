@@ -13,13 +13,21 @@ import java.nio.charset.StandardCharsets;
 public class CreateTablesQueriesExecutor {
     private final JdbcTemplate jdbcTemplate;
 
+    private static final Boolean DROP_TABLES = true;
+
     public CreateTablesQueriesExecutor(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public void executeCreateTableQueries() {
+        if (DROP_TABLES)
+            executeCreateTableQueries("dropTableScript.sql");
+        executeCreateTableQueries("mysql_setup.sql");
+    }
+
+    private void executeCreateTableQueries(String source) {
         try {
-            ClassPathResource resource = new ClassPathResource("mysql_setup.sql");
+            ClassPathResource resource = new ClassPathResource(source);
             byte[] data = FileCopyUtils.copyToByteArray(resource.getInputStream());
             String queries = new String(data, StandardCharsets.UTF_8);
 

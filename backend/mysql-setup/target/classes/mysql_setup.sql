@@ -7,6 +7,7 @@ ALTER TABLE
     `User` ADD PRIMARY KEY(`id`);
 CREATE TABLE `Place`(
     `id` BINARY(16) NOT NULL,
+    `nr` INT NOT NULL,
     `course` BINARY(16) NOT NULL
 );
 ALTER TABLE

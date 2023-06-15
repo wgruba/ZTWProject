@@ -1,0 +1,10 @@
+<div class="header">
+    <div class="left">
+        <h1 class="header__title">PDP INTERCONTINENTAL</h1>
+    </div>
+    <div class="right">
+        <div class="container">Name: {{ user.name }}</div>
+        <div class="container"><img src="{{ user.picture }}"></div>
+        <button (click)="logout()">Logout</button>
+    </div>
+</div>

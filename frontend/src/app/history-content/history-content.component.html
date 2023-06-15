@@ -1,0 +1,17 @@
+<div *ngFor="let ticket of this.tickets">
+    <div class='ticket__container'>
+        <div>
+            <h2>Ticket for route: {{ ticket.routeName }}</h2>
+            <p>Price: ${{ ticket.price }} </p>
+            <p>Start stop: {{ ticket.startCityName }} </p>
+            <p>End stop: {{ ticket.endCityName }} </p>
+            <p>Departure time: {{ ticket.departureTime }} </p>
+        </div>
+        <div>
+            <button (click)="generateQRCode(ticket)">Generate QR Code</button>
+        </div>
+        <div *ngIf="ticket.generatedQRCode" >
+            <qrcode class= "left" [qrdata]="ticket.generatedQRCode" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        </div>
+    </div>
+</div>
